@@ -1,5 +1,32 @@
 # Project Socrates progress
 
+## 2026-10-15 — v0.3.2 interaction and topics milestone
+
+User reported their PC test looked good and requested MCA-style menus, then
+supplied MCA: Conversations 1.8.0 as inspiration. Added independently implemented
+owner right-click menu, action buttons, appearance controls, non-pausing async
+conversation and topic suggestions. Everyday owner actions require no OP; server
+checks owner/dimension/distance/payload. Live status quietly refreshes.
+
+Build/reobfuscation passed; 13 actual Forge GameTests and 18 Python tests passed.
+Final installed production JAR visually tested for right-click/topics, async
+conversation, explicit fact recall across menu reopen, compact topic layout and
+exact one-item pickup/unload with live status. Earlier builds tested remaining
+action buttons and appearance. Full evidence and distinctions:
+`source/docs/TEST-RESULTS-0.3.2.md`. JAR `compiled/socrates-0.3.2.jar`, SHA-256
+`3ec6c7beb726a589351aaddabdec2ad433c3af5bf99c86515c1f9039ea9df267`.
+
+Reference JAR statically reviewed, not executed or redistributed. It declares
+GPL-3.0-only and requires MCA. Socrates remains standalone. Relationship tiers,
+branching dialogue, persistent conversational context and gossip are future work.
+Facts persist; screen transcript remains per opening. API calls and full Windows
+modpack compatibility remain untested. No changes to main modpack/world.
+
+Source/evidence/JAR checkpoint is backed up to branch `socrates/v0.3.2` after
+verified push. Versioned handoff includes updated Python service; replace the old
+service too for offline topic replies. No unattended runner has been configured.
+
+
 ## 2026-10-15 — v0.3.1 continuation milestone
 
 Starting point: supplied 0.3.0 handoff, not the 0.2 prototype. Exact original

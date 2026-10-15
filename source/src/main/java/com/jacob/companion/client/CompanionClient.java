@@ -8,6 +8,9 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = CompanionMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class CompanionClient {
+    @SubscribeEvent public static void setup(net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent event) {
+        event.enqueueWork(()->net.minecraft.client.gui.screens.MenuScreens.register(CompanionMod.INVENTORY.get(),CompanionInventoryScreen::new));
+    }
     @SubscribeEvent public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(CompanionMod.SOCRATES.get(), SocratesRenderer::new);
     }

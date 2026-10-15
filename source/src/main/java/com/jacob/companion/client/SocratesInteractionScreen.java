@@ -23,9 +23,9 @@ public final class SocratesInteractionScreen extends Screen {
     private final List<Component> conversation=new ArrayList<>();
     private String status;
     private int left,top,panelWidth,panelHeight,scroll,statusY,conversationY,refreshTicks;
-    private EditBox message,skin;
+    private EditBox message,skin,quantity;
     private Button send,close,autonomy;
-    private boolean appearance,topics,compact,pendingMessageFocus;
+    private boolean appearance,topics,work,compact,pendingMessageFocus;
 
     public SocratesInteractionScreen(SocratesEntity companion,String status) {
         super(Component.literal("Socrates"));this.companion=companion;this.status=status;
@@ -47,6 +47,14 @@ public final class SocratesInteractionScreen extends Screen {
             addRenderableWidget(Button.builder(Component.literal("Apply skin"),b->act(Action.SKIN,skin.getValue().trim())).bounds(actionsX,top+90,actionWidth,20).build());
             addRenderableWidget(Button.builder(Component.literal("Back"),b->{appearance=false;rebuildWidgets();}).bounds(actionsX+actionWidth+8,top+90,actionWidth,20).build());
             addRenderableWidget(Button.builder(Component.literal("Open skin folder"),b->openSkinFolder()).bounds(actionsX,top+118,panelWidth-124,20).build());
+        } else if(work) {
+            quantity=addRenderableWidget(new EditBox(font,actionsX,top+48,panelWidth-124,20,Component.literal("Oak log quantity, 1 to 64")));
+            quantity.setMaxLength(2);quantity.setValue("15");
+            addAction("Gather oak logs",actionsX,top+74,actionWidth,()->act(Action.HARVEST,quantity.getValue()));
+            addAction("Back",actionsX+actionWidth+8,top+74,actionWidth,()->{work=false;rebuildWidgets();});
+            addAction("Collect drops",actionsX,top+100,actionWidth,()->act(Action.COLLECT,""));
+            addAction("Explore",actionsX+actionWidth+8,top+100,actionWidth,()->act(Action.EXPLORE,""));
+            addAction("Prepare own kit",actionsX,top+126,panelWidth-124,()->say("prepare your equipment"));
         } else if(topics) {
             int y=top+(compact?42:48),step=compact?22:26;
             addAction("Say hello",actionsX,y,actionWidth,()->say("Hello, Socrates."));
@@ -55,7 +63,7 @@ public final class SocratesInteractionScreen extends Screen {
             addAction("Current status",actionsX+actionWidth+8,y+step,actionWidth,()->say("status"));
             addAction("Make a plan",actionsX,y+step*2,actionWidth,()->say("What should we do next?"));
             addAction("Remember a fact",actionsX+actionWidth+8,y+step*2,actionWidth,()->{message.setValue("remember ");focusMessage();});
-            addAction("Why Socrates?",actionsX,y+step*3,actionWidth,()->say("Why are you called Socrates?"));
+            addAction("Your goals",actionsX,y+step*3,actionWidth,()->say("What are your goals?"));
             addAction("Back",actionsX+actionWidth+8,y+step*3,actionWidth,()->{topics=false;rebuildWidgets();});
         } else {
             int y=top+(compact?42:48),step=compact?22:26;
@@ -64,8 +72,8 @@ public final class SocratesInteractionScreen extends Screen {
             addAction("Stay",actionsX,y+step,actionWidth,()->act(Action.STAY,""));
             addAction("Set home here",actionsX+actionWidth+8,y+step,actionWidth,()->act(Action.HOME,""));
             addAction("Live at home",actionsX,y+step*2,actionWidth,()->act(Action.RESIDENT,""));
-            addAction("Collect drops",actionsX+actionWidth+8,y+step*2,actionWidth,()->act(Action.COLLECT,""));
-            addAction("Explore",actionsX,y+step*3,actionWidth,()->act(Action.EXPLORE,""));
+            addAction("Tasks / Wood",actionsX+actionWidth+8,y+step*2,actionWidth,()->{work=true;rebuildWidgets();});
+            addAction("Inventory / Gear",actionsX,y+step*3,actionWidth,()->act(Action.INVENTORY,""));
             addAction("Unload items",actionsX+actionWidth+8,y+step*3,actionWidth,()->act(Action.UNLOAD,""));
             addAction("Appearance",actionsX,y+step*4,actionWidth,()->{appearance=true;rebuildWidgets();});
             autonomy=addRenderableWidget(Button.builder(autonomyLabel(),b->act(status.endsWith("Autonomy: on")?Action.AUTONOMY_OFF:Action.AUTONOMY_ON,""))
@@ -114,7 +122,7 @@ public final class SocratesInteractionScreen extends Screen {
     }
     @Override public void tick() {
         if(pendingMessageFocus) {setFocused(message);pendingMessageFocus=false;}
-        message.tick();if(skin!=null&&appearance)skin.tick();
+        message.tick();if(quantity!=null&&work)quantity.tick();if(skin!=null&&appearance)skin.tick();
         for(var child:children())if(child instanceof AbstractWidget widget&&widget!=close)widget.active=nearby();
         send.active=nearby()&&!message.getValue().isBlank();
         if(nearby()&&++refreshTicks>=20) {refreshTicks=0;act(Action.REFRESH,"");}
@@ -125,6 +133,7 @@ public final class SocratesInteractionScreen extends Screen {
     }
     @Override public boolean keyPressed(int key,int scan,int modifiers) {
         if(key==257||key==335) {
+            if(work&&quantity!=null&&quantity.isFocused()) {if(nearby())act(Action.HARVEST,quantity.getValue());return true;}
             if(appearance&&skin!=null&&skin.isFocused()) {
                 if(nearby())act(Action.SKIN,skin.getValue().trim());return true;
             }

@@ -1,6 +1,6 @@
-# Project Socrates 0.3.2 — continuation handoff
+# Project Socrates 0.4.0-preview.1 — continuation handoff
 
-Read `PROGRESS.md`, `source/README.md`, `source/docs/TEST-RESULTS-0.3.2.md`, and
+Read `PROGRESS.md`, `source/README.md`, `source/docs/TEST-RESULTS-0.4.0-preview.1.md`, and
 `source/docs/ARCHITECTURE.md` first. This continues the supplied 0.3.0 source;
 its exact import and original evidence are preserved in Git baseline 824bd45.
 Do not restart from the old 0.2 prototype.
@@ -22,5 +22,7 @@ preserves commit history. No credentials, databases or test worlds belong in it.
 No unattended work occurs between sessions without a persistent runner.
 
 0.3.2 adds the MCA-style right-click interaction menu and owner-scoped packets.
-See source/docs/TEST-RESULTS-0.3.2.md for this release. The previous 0.3.1 report
+See source/docs/TEST-RESULTS-0.4.0-preview.1.md for this release. The previous 0.3.1 report
 and artifacts remain historical evidence; user reports its PC smoke test looked good.
+
+The new capability preview adds shared inventory/gear, bounded oak harvesting, basic recipe-validated kit crafting and an authored personal objective. It is not full autonomous survival. Read source/docs/PLAYER2-EVALUATION.md before expanding broad mining/building: matching Forge branches may provide a better backend, subject to runtime, licensing and pricing checks.

@@ -22,9 +22,11 @@ public class CompanionMod {
     public static final String MODID="companion";
     public static final DeferredRegister<EntityType<?>> ENTITIES=DeferredRegister.create(ForgeRegistries.ENTITY_TYPES,MODID);
     public static final RegistryObject<EntityType<SocratesEntity>> SOCRATES=ENTITIES.register("socrates",()->EntityType.Builder.of(SocratesEntity::new,MobCategory.CREATURE).sized(0.6f,1.8f).clientTrackingRange(8).build("companion:socrates"));
+    public static final DeferredRegister<net.minecraft.world.inventory.MenuType<?>> MENUS=DeferredRegister.create(ForgeRegistries.MENU_TYPES,MODID);
+    public static final RegistryObject<net.minecraft.world.inventory.MenuType<CompanionInventoryMenu>> INVENTORY=MENUS.register("inventory",()->net.minecraftforge.common.extensions.IForgeMenuType.create(CompanionInventoryMenu::new));
     public CompanionMod() {
         var bus=FMLJavaModLoadingContext.get().getModEventBus();
-        ENTITIES.register(bus); bus.addListener(this::attributes); MinecraftForge.EVENT_BUS.register(this);
+        ENTITIES.register(bus);MENUS.register(bus); bus.addListener(this::attributes); MinecraftForge.EVENT_BUS.register(this);
         InteractionNetwork.register();
     }
     private void attributes(EntityAttributeCreationEvent event) { event.put(SOCRATES.get(),SocratesEntity.createAttributes().build()); }

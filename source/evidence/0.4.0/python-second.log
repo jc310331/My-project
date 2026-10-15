@@ -1,0 +1,28 @@
+test_http_browser_origin (test_service.HttpTests.test_http_browser_origin) ... ok
+test_http_malformed (test_service.HttpTests.test_http_malformed) ... ok
+test_http_non_ascii_authorization (test_service.HttpTests.test_http_non_ascii_authorization) ... ok
+test_http_oversize (test_service.HttpTests.test_http_oversize) ... ok
+test_http_valid (test_service.HttpTests.test_http_valid) ... ok
+test_http_wrong_token (test_service.HttpTests.test_http_wrong_token) ... ok
+test_acknowledgements_are_scoped_idempotent_and_reserve_player_logs (test_service.PlannerTests.test_acknowledgements_are_scoped_idempotent_and_reserve_player_logs) ... ok
+test_bad_observations_and_low_health (test_service.PlannerTests.test_bad_observations_and_low_health) ... ok
+test_cloud_output_allowlist (test_service.PlannerTests.test_cloud_output_allowlist) ... ok
+test_conversation_topics_do_not_start_goals (test_service.PlannerTests.test_conversation_topics_do_not_start_goals) ... ok
+test_extra_parameters_rejected (test_service.PlannerTests.test_extra_parameters_rejected) ... ok
+test_intents (test_service.PlannerTests.test_intents) ... ok
+test_invalid_scope (test_service.PlannerTests.test_invalid_scope) ... ok
+test_long_reply_rejected (test_service.PlannerTests.test_long_reply_rejected) ... ok
+test_memory_survives_restart (test_service.PlannerTests.test_memory_survives_restart) ... ok
+test_no_autonomy_without_observation (test_service.PlannerTests.test_no_autonomy_without_observation) ... ok
+test_personal_crafting_and_readiness (test_service.PlannerTests.test_personal_crafting_and_readiness) ... ok
+test_personal_goal_survives_restart (test_service.PlannerTests.test_personal_goal_survives_restart) ... ok
+test_quantity_gather_and_bounds (test_service.PlannerTests.test_quantity_gather_and_bounds) ... ok
+test_unknown_action_rejected (test_service.PlannerTests.test_unknown_action_rejected) ... ok
+test_unsupported_task_is_not_claimed (test_service.PlannerTests.test_unsupported_task_is_not_claimed) ... ok
+test_world_isolation (test_service.PlannerTests.test_world_isolation) ... ok
+test_redirect_does_not_forward_credentials (test_service.ProviderTransportTests.test_redirect_does_not_forward_credentials) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 5.653s
+
+OK

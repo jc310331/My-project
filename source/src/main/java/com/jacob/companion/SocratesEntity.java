@@ -16,14 +16,24 @@ public class SocratesEntity extends PathfinderMob {
     private static final EntityDataAccessor<String> SKIN = SynchedEntityData.defineId(SocratesEntity.class, EntityDataSerializers.STRING);
     public enum Mode { RESIDENT, ADVENTURE, HELPER, STAY }
     private final net.minecraft.world.SimpleContainer inventory=new net.minecraft.world.SimpleContainer(9);
+    private final OakHarvestJob oakJob=new OakHarvestJob(this);
+    public OakHarvestJob oakJob() {return oakJob;}
+    public boolean startOakJob(int count) {
+        if(level().isClientSide||count<1||count>64)return false;
+        setMode(Mode.HELPER);task="oak_logs";oakJob.start(count);return true;
+    }
+    public void finishOakJob() {task="";taskTicks=0;planRevision++;mode=Mode.ADVENTURE;getNavigation().stop();}
     private String task="";
     private int taskTicks;
     private int planRevision;
     private boolean autonomy;
+    private String personalGoal="Prepare my own travel equipment and keep a small wood reserve.";
+    public String personalGoal() {return personalGoal;}
+    public void setPersonalGoal(String goal) {personalGoal=goal.length()>600?goal.substring(0,600):goal;}
     public int getPlanRevision() {return planRevision;}
     public String getTask() {return task;}
     public net.minecraft.world.SimpleContainer getInventory() {return inventory;}
-    public void setAutonomy(boolean enabled) {autonomy=enabled;planRevision++;}
+    public void setAutonomy(boolean enabled) {if(enabled&&mode==Mode.STAY)setMode(Mode.RESIDENT);autonomy=enabled;planRevision++;}
     public boolean isAutonomy() {return autonomy;}
     public boolean setTask(String value) {
         if(!java.util.Set.of("collect","explore").contains(value) || home==null || home.distSqr(blockPosition())>256)return false;
@@ -32,8 +42,9 @@ public class SocratesEntity extends PathfinderMob {
     @Override public void tick() {
         super.tick();
         if(!level().isClientSide) {
+            oakJob.observeInventory();
             if(taskTicks>0 && --taskTicks==0) {task="";getNavigation().stop();planRevision++;}
-            if(autonomy && mode!=Mode.STAY && task.isEmpty() && tickCount%1200==0 && owner!=null) {
+            if(autonomy && mode!=Mode.STAY && task.isEmpty() && tickCount%200==0 && owner!=null) {
                 var player=getServer().getPlayerList().getPlayer(owner);
                 if(player!=null && player.level()==level() && distanceToSqr(player)<1024)AiBridge.ask(player,this,"[autonomy]");
             }
@@ -69,10 +80,17 @@ public class SocratesEntity extends PathfinderMob {
         return net.minecraft.world.InteractionResult.sidedSuccess(level().isClientSide);
     }
     public Mode getMode() { return mode; }
-    public void setMode(Mode value) { mode=value; task="";taskTicks=0;planRevision++;if(value==Mode.STAY)autonomy=false;getNavigation().stop(); }
+    public void setMode(Mode value) { if(oakJob!=null)oakJob.cancel();mode=value; task="";taskTicks=0;planRevision++;if(value==Mode.STAY)autonomy=false;getNavigation().stop(); }
     public void setHome(BlockPos value) { home=value.immutable();planRevision++;restrictTo(home,16); }
     public BlockPos getHome() { return home; }
     @Override public boolean removeWhenFarAway(double distance) { return false; }
+    private final class OakHarvestGoalProxy extends Goal {
+        {setFlags(EnumSet.of(Flag.MOVE,Flag.LOOK));}
+        public boolean canUse() {return oakJob!=null&&oakJob.canUse();}
+        public boolean requiresUpdateEveryTick() {return true;}
+        public void tick() {oakJob.tick();}
+        public void stop() {if(oakJob!=null)oakJob.stop();}
+    }
     @Override protected void registerGoals() {
         goalSelector.addGoal(0,new FloatGoal(this));
         goalSelector.addGoal(1,new Goal() {
@@ -84,7 +102,8 @@ public class SocratesEntity extends PathfinderMob {
         goalSelector.addGoal(2,new AvoidEntityGoal<>(this,net.minecraft.world.entity.monster.Monster.class,8.0f,1.1,1.3) {
             @Override public boolean canUse() { return (mode==Mode.ADVENTURE || mode==Mode.HELPER) && super.canUse(); }
         });
-        goalSelector.addGoal(3,new Goal() {
+        goalSelector.addGoal(3,new OakHarvestGoalProxy());
+        goalSelector.addGoal(4,new Goal() {
             private Player target;
             { setFlags(EnumSet.of(Flag.MOVE,Flag.LOOK)); }
             public boolean canUse() {
@@ -145,7 +164,7 @@ public class SocratesEntity extends PathfinderMob {
     }
     @Override public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.put("Inventory",inventory.createTag());tag.putString("Task",task);tag.putInt("TaskTicks",taskTicks);tag.putBoolean("Autonomy",autonomy);
+        tag.putString("PersonalGoal",personalGoal);tag.put("OakJob",oakJob.save());tag.put("Inventory",inventory.createTag());tag.putString("Task",task);tag.putInt("TaskTicks",taskTicks);tag.putBoolean("Autonomy",autonomy);
         tag.putString("SkinUsername",getSkinUsername()); tag.putString("SocratesMode",mode.name());
         if(owner!=null) tag.putUUID("SocratesOwner",owner);
         if(home!=null) tag.putLong("SocratesHome",home.asLong());
@@ -157,9 +176,11 @@ public class SocratesEntity extends PathfinderMob {
         if(tag.hasUUID("SocratesOwner")) owner=tag.getUUID("SocratesOwner");
         if(tag.contains("SocratesHome")) setHome(BlockPos.of(tag.getLong("SocratesHome")));
         inventory.fromTag(tag.getList("Inventory",10));
-        String savedTask=tag.getString("Task");task=java.util.Set.of("collect","explore").contains(savedTask) && mode==Mode.HELPER?savedTask:"";
+        String savedTask=tag.getString("Task");task=java.util.Set.of("collect","explore","oak_logs").contains(savedTask) && mode==Mode.HELPER?savedTask:"";
         taskTicks=task.isEmpty()?0:Math.max(0,Math.min(1200,tag.getInt("TaskTicks")));
-        if(taskTicks==0)task="";
+        if(tag.contains("PersonalGoal"))setPersonalGoal(tag.getString("PersonalGoal"));
+        oakJob.load(tag.getCompound("OakJob"));
+        if(task.equals("oak_logs")) {if(!oakJob.active())task="";}else if(taskTicks==0)task="";
         autonomy=mode!=Mode.STAY && tag.getBoolean("Autonomy");
     }
 }

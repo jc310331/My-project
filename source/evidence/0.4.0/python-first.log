@@ -1,0 +1,42 @@
+test_http_browser_origin (test_service.HttpTests.test_http_browser_origin) ... ok
+test_http_malformed (test_service.HttpTests.test_http_malformed) ... ok
+test_http_non_ascii_authorization (test_service.HttpTests.test_http_non_ascii_authorization) ... ok
+test_http_oversize (test_service.HttpTests.test_http_oversize) ... ok
+test_http_valid (test_service.HttpTests.test_http_valid) ... ok
+test_http_wrong_token (test_service.HttpTests.test_http_wrong_token) ... ok
+test_autonomous_goal_survives_restart (test_service.PlannerTests.test_autonomous_goal_survives_restart) ... FAIL
+test_cloud_output_allowlist (test_service.PlannerTests.test_cloud_output_allowlist) ... ok
+test_conversation_topics_do_not_start_goals (test_service.PlannerTests.test_conversation_topics_do_not_start_goals) ... FAIL
+test_extra_parameters_rejected (test_service.PlannerTests.test_extra_parameters_rejected) ... ok
+test_intents (test_service.PlannerTests.test_intents) ... ok
+test_invalid_scope (test_service.PlannerTests.test_invalid_scope) ... ok
+test_long_reply_rejected (test_service.PlannerTests.test_long_reply_rejected) ... ok
+test_memory_survives_restart (test_service.PlannerTests.test_memory_survives_restart) ... ok
+test_unknown_action_rejected (test_service.PlannerTests.test_unknown_action_rejected) ... ok
+test_unsupported_task_is_not_claimed (test_service.PlannerTests.test_unsupported_task_is_not_claimed) ... ok
+test_world_isolation (test_service.PlannerTests.test_world_isolation) ... ok
+test_redirect_does_not_forward_credentials (test_service.ProviderTransportTests.test_redirect_does_not_forward_credentials) ... ok
+
+======================================================================
+FAIL: test_autonomous_goal_survives_restart (test_service.PlannerTests.test_autonomous_goal_survives_restart)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/My-project/source/ai/test_service.py", line 21, in test_autonomous_goal_survives_restart
+    self.assertEqual(self.planner.plan(self.request)['action'], 'collect')
+AssertionError: 'none' != 'collect'
+- none
++ collect
+
+
+======================================================================
+FAIL: test_conversation_topics_do_not_start_goals (test_service.PlannerTests.test_conversation_topics_do_not_start_goals)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/My-project/source/ai/test_service.py", line 46, in test_conversation_topics_do_not_start_goals
+    self.assertIn('cannot mine', self.planner.plan(self.request)['reply'])
+AssertionError: 'cannot mine' not found in 'I can follow, stay, live near home, explore nearby, and collect dropped items. I can remember facts you tell me. I can harvest small oak trunks with an axe and prepare basic tools at a crafting table. General mining, building, combat and Create operation are not supported.'
+
+----------------------------------------------------------------------
+Ran 18 tests in 5.631s
+
+FAILED (failures=2)

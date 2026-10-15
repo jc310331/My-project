@@ -1,0 +1,37 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.8/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Task :compileJava
+/workspace/My-project/source/src/main/java/com/jacob/companion/InteractionNetwork.java:18: warning: [removal] ResourceLocation(String,String) in ResourceLocation has been deprecated and marked for removal
+        new ResourceLocation(CompanionMod.MODID, "interaction"), () -> VERSION, VERSION::equals, VERSION::equals);
+        ^
+/workspace/My-project/source/src/main/java/com/jacob/companion/client/CompanionInventoryScreen.java:11: warning: [removal] ResourceLocation(String,String) in ResourceLocation has been deprecated and marked for removal
+    private static final ResourceLocation TEXTURE=new ResourceLocation("minecraft","textures/gui/container/generic_54.png");
+                                                  ^
+/workspace/My-project/source/src/main/java/com/jacob/companion/CompanionMod.java:28: warning: [removal] get() in FMLJavaModLoadingContext has been deprecated and marked for removal
+        var bus=FMLJavaModLoadingContext.get().getModEventBus();
+                                        ^
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+3 warnings
+
+> Task :processResources
+> Task :classes
+> Task :jar
+> Task :downloadMcpConfig
+> Task :extractSrg UP-TO-DATE
+> Task :createMcpToSrg UP-TO-DATE
+> Task :reobfJar
+> Task :jarJar SKIPPED
+> Task :reobfJarJar SKIPPED
+> Task :sourcesJar
+> Task :assemble
+> Task :compileTestJava NO-SOURCE
+> Task :processTestResources NO-SOURCE
+> Task :testClasses UP-TO-DATE
+> Task :test NO-SOURCE
+> Task :check UP-TO-DATE
+> Task :build
+
+BUILD SUCCESSFUL in 11s
+8 actionable tasks: 6 executed, 2 up-to-date

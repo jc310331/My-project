@@ -70,6 +70,11 @@ public final class InteractionNetwork {
                 CHANNEL.send(PacketDistributor.PLAYER.with(() -> player),new Reply(request.entity(),result.message(),""));
                 return;
             }
+            if(request.action()==InteractionActions.Action.INVENTORY) {
+                net.minecraftforge.network.NetworkHooks.openScreen(player,new net.minecraft.world.SimpleMenuProvider(
+                    (id,inventory,p)->new CompanionInventoryMenu(id,inventory,companion),Component.literal("Socrates — Inventory")),b->b.writeVarInt(companion.getId()));
+                return;
+            }
             if(request.action()==InteractionActions.Action.REFRESH) {
                 CHANNEL.send(PacketDistributor.PLAYER.with(() -> player),new Reply(request.entity(),"",InteractionActions.status(companion)));
                 return;

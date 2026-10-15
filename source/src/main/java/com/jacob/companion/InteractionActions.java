@@ -4,7 +4,7 @@ import net.minecraft.world.entity.player.Player;
 
 /** Menu requests are scoped to an owned, loaded, nearby companion; never commands. */
 public final class InteractionActions {
-    public enum Action { TALK, FOLLOW, STAY, HOME, RESIDENT, COLLECT, EXPLORE, UNLOAD, AUTONOMY_ON, AUTONOMY_OFF, SKIN, REFRESH }
+    public enum Action { TALK, FOLLOW, STAY, HOME, RESIDENT, COLLECT, EXPLORE, UNLOAD, AUTONOMY_ON, AUTONOMY_OFF, SKIN, REFRESH, INVENTORY, HARVEST }
     public record Result(boolean accepted, String message) { }
 
     public static boolean canControl(Player player, SocratesEntity companion) {
@@ -18,9 +18,15 @@ public final class InteractionActions {
         if (!canControl(player, companion)) return new Result(false, "Move closer to your own Socrates to interact.");
         if (action == null || text == null || text.length() > 1000)
             return new Result(false, "Invalid interaction.");
-        if (action != Action.TALK && action != Action.SKIN && !text.isEmpty())
+        if (action != Action.TALK && action != Action.SKIN && action != Action.HARVEST && !text.isEmpty())
             return new Result(false, "Unexpected interaction text.");
         switch (action) {
+            case HARVEST -> {
+                if(!text.matches("[1-9][0-9]?"))return new Result(false,"Choose 1–64 oak logs.");
+                int count=Integer.parseInt(text);if(count>64||!companion.startOakJob(count))return new Result(false,"Choose 1–64 oak logs.");
+                return new Result(true,"I will gather "+count+" oak logs from nearby small oak trees. Give me an axe in Inventory / Gear.");
+            }
+            case INVENTORY -> {return new Result(true, "");}
             case REFRESH -> {return new Result(true, "");}
             case TALK -> {
                 if (text.isBlank()) return new Result(false, "Write a message first.");

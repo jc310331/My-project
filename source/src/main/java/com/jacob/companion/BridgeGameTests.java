@@ -16,6 +16,12 @@ public class BridgeGameTests {
         request.addProperty("text","remember integration-test-fact");AiBridge.request(request);
         request.addProperty("text","memories");
         h.assertTrue(AiBridge.request(request).get("reply").getAsString().contains("integration-test-fact"),"SQLite fact missing across HTTP requests");
+        var observation=new JsonObject();observation.addProperty("health",20);observation.addProperty("mode","STAY");
+        observation.add("items",new JsonObject());observation.addProperty("has_axe",true);observation.addProperty("has_pickaxe",false);
+        request.add("observations",observation);request.addProperty("text","go get me 15 oak logs");
+        h.assertTrue(AiBridge.request(request).get("action").getAsString().equals("oak_logs:15"),"Quantity request failed across authenticated bridge");
+        request.addProperty("text","[autonomy]");
+        h.assertTrue(AiBridge.request(request).get("action").getAsString().equals("oak_logs:2"),"Personal materials goal did not use observed tools");
         h.succeed();
     }
 }

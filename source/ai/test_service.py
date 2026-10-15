@@ -16,10 +16,45 @@ class PlannerTests(unittest.TestCase):
         self.request = dict(world=str(uuid.uuid4()), owner=str(uuid.uuid4()), entity=str(uuid.uuid4()), text='follow me')
     def tearDown(self):
         self.temp.cleanup()
-    def test_autonomous_goal_survives_restart(self):
-        self.request['text'] = '[autonomy]'
-        self.assertEqual(self.planner.plan(self.request)['action'], 'collect')
-        self.assertEqual(Planner(self.path).plan(self.request)['action'], 'explore')
+    def test_personal_goal_survives_restart(self):
+        self.request.update(text='[autonomy]', observations={'items':{}, 'has_axe':True, 'has_pickaxe':False, 'crafting_table':False})
+        self.assertEqual(self.planner.plan(self.request)['action'], 'oak_logs:2')
+        other=Planner(self.path)
+        self.request['text']='what are your goals?'
+        self.assertIn('gather tool materials',other.plan(self.request)['reply'])
+        with other.connect() as db:
+            self.assertEqual(db.execute('SELECT COUNT(*) FROM personal_goals').fetchone()[0],1)
+    def test_no_autonomy_without_observation(self):
+        self.request['text']='[autonomy]'
+        self.assertEqual(self.planner.plan(self.request)['action'],'none')
+    def test_quantity_gather_and_bounds(self):
+        for text in ('go get me 15 oak logs', 'get me 15 oak logs, here is an axe', 'gather 15 oak logs'):
+            self.request['text']=text
+            self.assertEqual(self.planner.plan(self.request)['action'],'oak_logs:15')
+        for n in (0,65,999):
+            self.request['text']='get me '+str(n)+' oak logs'
+            self.assertEqual(self.planner.plan(self.request)['action'],'none')
+        for action in ('oak_logs:0','oak_logs:65','oak_logs:15;op @a'):
+            with self.assertRaises(ValueError):validate_plan({'action':action,'reply':'bad'})
+    def test_personal_crafting_and_readiness(self):
+        self.request.update(text='[autonomy]',observations={'items':{'minecraft:oak_log':2},'has_axe':False,'has_pickaxe':False,'crafting_table':True})
+        self.assertEqual(self.planner.plan(self.request)['action'],'craft_kit')
+        self.request['observations'].update(has_axe=True,has_pickaxe=True,items={'minecraft:oak_log':8})
+        self.assertEqual(self.planner.plan(self.request)['action'],'none')
+        self.assertIn('ready',self.planner.plan(self.request)['reply'])
+    def test_acknowledgements_are_scoped_idempotent_and_reserve_player_logs(self):
+        job={'id':str(uuid.uuid4()),'state':'completed','summary':'Oak logs 15/15 completed','personal':False}
+        self.request.update(text='[autonomy]',observations={'job':job,'items':{'minecraft:oak_log':15},'crafting_table':True})
+        for _ in range(2):self.assertEqual(self.planner.plan(self.request)['action'],'none')
+        with self.planner.connect() as db:
+            self.assertEqual(db.execute('SELECT COUNT(*) FROM action_results').fetchone()[0],1)
+        job.update(id=str(uuid.uuid4()),state='blocked',summary='Need an axe')
+        self.assertIn('Need an axe',self.planner.plan(self.request)['reply'])
+    def test_bad_observations_and_low_health(self):
+        self.request.update(text='[autonomy]',observations={'items':{'minecraft:oak_log':-2}})
+        with self.assertRaises(ValueError):self.planner.plan(self.request)
+        self.request['observations']={'health':3,'has_axe':True,'items':{}}
+        self.assertEqual(self.planner.plan(self.request)['action'],'none')
     def test_intents(self):
         for text, action in [('follow me','follow'), ('stay here','stay'), ('set home','home'), ('collect items','collect'), ('explore','explore')]:
             self.request['text'] = text
@@ -43,7 +78,7 @@ class PlannerTests(unittest.TestCase):
         with self.planner.connect() as db:
             self.assertEqual(db.execute('SELECT COUNT(*) FROM goals').fetchone()[0], 0)
         self.request['text'] = 'What can you help with?'
-        self.assertIn('cannot mine', self.planner.plan(self.request)['reply'])
+        self.assertIn('General mining', self.planner.plan(self.request)['reply'])
     def test_unknown_action_rejected(self):
         with self.assertRaises(ValueError): validate_plan({'action':'op @a','reply':'okay'})
     def test_extra_parameters_rejected(self):

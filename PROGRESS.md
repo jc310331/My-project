@@ -1,5 +1,44 @@
 # Project Socrates progress
 
+## 2026-10-15 — 0.4.0-preview.1 capabilities and Player2 evaluation
+
+User clarified that Socrates should be a fellow player with interactive inventory,
+real quantity gathering, crafting/equipment and his own goals, then requested a
+Player2/Player2NPC review. Implemented a bounded preview: standard owner inventory
+and gear transfers; nearby small-oak harvesting with real axe wear, exact pickup
+count, blockers/cancellation and persisted outcomes; recipe-validated basic kit
+crafting; live state snapshots; natural-language bounded oak requests; and an
+authored persistent personal travel-kit/eight-log-reserve objective. Broader
+survival, arbitrary mining/building and Create remain unimplemented.
+
+Final build/reobfuscation and 20 real Forge tests passed; 23 Python tests passed.
+Earlier preview JAR graphically completed the exact 15-log request after axe
+handover. Final byte-matched artifact graphically reopened inventory/state,
+accepted seed wood, autonomously crafted a pickaxe, gathered a personal eight-log
+reserve and reported readiness. Wooden axe and iron chestplate crafting passed
+engine tests; not repeated graphically. Details, failed/corrected runs and precise
+coverage: source/docs/TEST-RESULTS-0.4.0-preview.1.md.
+JAR SHA-256: 639d7c509d292772328a6c345b428a07e2a421662c65a23cd5360751ab815946.
+
+Player2 source review found matching Forge 1.20.1 Architectury branches in both
+Player2NPC and PlayerEngine, broader resource/crafting/survival task infrastructure,
+and a structure-building path that bypasses material collection. See
+source/docs/PLAYER2-EVALUATION.md for exact commits and source links. No external
+code, binaries or dependency were added. The NPC branch has inconsistent license
+metadata and a missing locally referenced build JAR; matching artifacts are needed
+for a reproducible trial. Runtime quality, pack compatibility and pricing remain
+unverified. Player2 SDK/engine explicitly use credits/AI Power; do not assume free.
+User is open to Player2 depending on quality and pricing, not committed to it.
+
+player2.game and CurseForge were blocked by running-cloud proxy policy. Relevant
+site hostnames were saved to the cloud draft, but the retry remained blocked;
+draft saving is not runtime activation/publication. GitHub source inspection was
+available. Recommendation: a separate Player2NPC/PlayerEngine gameplay/cost trial
+before duplicating broad survival/building systems. Preserve Socrates and its
+hybrid architecture; an engine integration needs entity/inventory migration tests.
+No unattended runner or paid provider calls were configured.
+
+
 ## 2026-10-15 — design workshop while user tests 0.3.2
 
 Reviewed the current entity, bridge, planner and release evidence for the user's

@@ -1,3 +1,12 @@
+0.4.0-preview.1 — 2026-10-15
+- Add server-owned inventory and equipment screen with standard slot transfers.
+- Add quantity-based nearby small-oak harvesting, axe wear, blockers, cancellation and persisted outcomes.
+- Add state observations and bounded natural-language oak requests through the local bridge.
+- Add recipe-validated basic personal kit crafting and an authored travel-kit/wood-reserve objective.
+- Preserve requested logs for handover; mirror observed oak outcomes to scoped SQLite rows.
+- Research Player2NPC/PlayerEngine matching Forge branches; no external dependency added.
+- See docs/TEST-RESULTS-0.4.0-preview.1.md for exact evidence and limits.
+
 0.3.2 — 2026-10-15
 - Add owner right-click menu: following, staying, home, collection, exploration, unload, autonomy and skins.
 - Add in-menu asynchronous conversation, original topic suggestions and offline topic replies.

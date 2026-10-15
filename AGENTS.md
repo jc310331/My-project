@@ -35,3 +35,10 @@ The user wants MCA-style right-click interactions instead of command-only play.
 Maintain the owner menu, in-menu conversation, live status and appearance controls.
 Menu packets must validate owner/dimension/range on the server thread; everyday
 owner actions must not require OP. Read the current versioned test report.
+
+The latest capability preview is 0.4.0-preview.1. Read its versioned report and
+source/docs/PLAYER2-EVALUATION.md. The user wants a fellow player with personal
+goals, shared inventory and real gathering/crafting. Keep authored starter
+autonomy distinct from general agency. Player2 is acceptable only if quality and
+pricing fit; neither live quality nor current pricing has been verified. Preserve
+existing source while evaluating the matching Forge PlayerEngine branches.

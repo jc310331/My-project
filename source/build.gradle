@@ -4,7 +4,7 @@ plugins {
     id 'net.minecraftforge.gradle' version '6.0.54'
 }
 group = 'com.jacob.companion'
-version = '0.3.2'
+version = '0.4.0-preview.1'
 base { archivesName = 'socrates' }
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 minecraft {

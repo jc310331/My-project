@@ -21,7 +21,7 @@ public final class AiBridge {
         if(PENDING.contains(owner) || now-LAST.getOrDefault(owner,0L)<TimeUnit.SECONDS.toNanos(3)) {InteractionNetwork.message(player,s,"Socrates is still thinking; try again shortly.");return;}
         var server=player.getServer();var level=s.level();UUID entity=s.getUUID();int revision=s.getPlanRevision();
         var registry=server.overworld().getDataStorage().computeIfAbsent(CompanionRegistry::load,CompanionRegistry::new,"socrates_registry");
-        var body=new JsonObject();body.addProperty("world",registry.worldId().toString());body.addProperty("owner",owner.toString());body.addProperty("entity",entity.toString());body.addProperty("text",text);
+        var body=new JsonObject();body.addProperty("world",registry.worldId().toString());body.addProperty("owner",owner.toString());body.addProperty("entity",entity.toString());body.addProperty("text",text);body.add("observations",WorldObservation.snapshot(s));
         PENDING.add(owner);LAST.put(owner,now);
         try { WORKER.submit(()->{
             JsonObject result=null;String failure=null;
@@ -36,6 +36,14 @@ public final class AiBridge {
                     InteractionNetwork.message(current,s,"Discarded stale Socrates plan; state changed or companion is out of range.");return;
                 }
                 String action=response.get("action").getAsString();
+                if(action.startsWith("oak_logs:")) {s.startOakJob(Integer.parseInt(action.substring(9)));s.oakJob().setPersonal(text.equals("[autonomy]"));}
+                if(action.equals("craft_kit")) {
+                    String outcome=KitCrafting.step(s);s.setPersonalGoal(outcome);InteractionNetwork.message(current,s,"Socrates: "+outcome);return;
+                }
+                if(text.equals("[autonomy]")) {
+                    boolean changed=!s.personalGoal().equals(response.get("reply").getAsString());s.setPersonalGoal(response.get("reply").getAsString());
+                    if(action.equals("none")) {if(changed)InteractionNetwork.message(current,s,"Socrates: "+s.personalGoal());return;}
+                }
                 switch(action) {
                     case "follow" -> s.setMode(SocratesEntity.Mode.ADVENTURE);
                     case "stay" -> s.setMode(SocratesEntity.Mode.STAY);
@@ -69,7 +77,7 @@ public final class AiBridge {
     }
     static JsonObject validate(JsonObject data) {
         if(data.size()!=2 || !data.has("action") || !data.has("reply") || !data.get("action").isJsonPrimitive() || !data.get("reply").isJsonPrimitive() || !data.getAsJsonPrimitive("action").isString() || !data.getAsJsonPrimitive("reply").isString())throw new IllegalArgumentException("Invalid reply");
-        if(!Set.of("none","follow","stay","resident","home","status","collect","explore").contains(data.get("action").getAsString()) || data.get("reply").getAsString().length()>600)throw new IllegalArgumentException("Unsupported plan");
+        if(!(Set.of("none","follow","stay","resident","home","status","collect","explore","craft_kit").contains(data.get("action").getAsString())||data.get("action").getAsString().matches("oak_logs:([1-9]|[1-5][0-9]|6[0-4])")) || data.get("reply").getAsString().length()>600)throw new IllegalArgumentException("Unsupported plan");
         return data;
     }
 }

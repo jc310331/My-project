@@ -3,7 +3,7 @@ loaderVersion="[47,)"
 license="MIT"
 [[mods]]
 modId="companion"
-version="0.3.0"
+version="0.3.1"
 displayName="Project Socrates"
 description='''Experimental player-shaped companion with local AI bridge and bounded helper tasks.'''
 [[dependencies.companion]]

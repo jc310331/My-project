@@ -1,0 +1,7 @@
+PASS: Final reobfuscated build and nine required engine tests (build-engine-final-diagonal.log)
+PASS: Seventeen Python tests (python-final.log)
+PASS: Production pickup and exact unload (production-0.3.1-final.log)
+PASS: Production async memory and owner following (production-0.3.1.log)
+PASS: Production world reload preserved held equipment (production-0.3.1.log)
+PASS: fresh default-skin launch has no key, signature or texture download errors; screenshot visually inspected
+Production JAR SHA-256: 2cb84ad65d72e99c551711de66c71d3d8404409936b5356e00ad4279eeb86e66

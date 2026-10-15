@@ -1,0 +1,114 @@
+Initialized native services in: /workspace/gradle-cache/native
+Initialized jansi services in: /workspace/gradle-cache/native
+Received JVM installation metadata from '/workspace/toolchains/jdk-17.0.16+8': {JAVA_HOME=/workspace/toolchains/jdk-17.0.16+8, JAVA_VERSION=17.0.16, JAVA_VENDOR=Eclipse Adoptium, RUNTIME_NAME=OpenJDK Runtime Environment, RUNTIME_VERSION=17.0.16+8, VM_NAME=OpenJDK 64-Bit Server VM, VM_VERSION=17.0.16+8, VM_VENDOR=Eclipse Adoptium, OS_ARCH=amd64}
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.8/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Starting process 'Gradle build daemon'. Working directory: /workspace/gradle-cache/daemon/8.8 Command: /workspace/toolchains/jdk-17.0.16+8/bin/java --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.prefs/java.util.prefs=ALL-UNNAMED --add-opens=java.base/java.nio.charset=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED -Xmx2G -Dfile.encoding=UTF-8 -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts -Duser.country -Duser.language=en -Duser.variant -cp /workspace/toolchains/gradle-8.8/lib/gradle-launcher-8.8.jar -javaagent:/workspace/toolchains/gradle-8.8/lib/agents/gradle-instrumentation-agent-8.8.jar org.gradle.launcher.daemon.bootstrap.GradleDaemon 8.8
+Successfully started process 'Gradle build daemon'
+An attempt to start the daemon took 0.642 secs.
+The client will now receive all logging from the daemon (pid: 49175). The daemon log file: /workspace/gradle-cache/daemon/8.8/daemon-49175.out.log
+Daemon will be stopped at the end of the build 
+Using 2 worker leases.
+Received JVM installation metadata from '/workspace/toolchains/jdk-17.0.16+8': {JAVA_HOME=/workspace/toolchains/jdk-17.0.16+8, JAVA_VERSION=17.0.16, JAVA_VENDOR=Eclipse Adoptium, RUNTIME_NAME=OpenJDK Runtime Environment, RUNTIME_VERSION=17.0.16+8, VM_NAME=OpenJDK 64-Bit Server VM, VM_VERSION=17.0.16+8, VM_VENDOR=Eclipse Adoptium, OS_ARCH=amd64}
+Watching the file system is configured to be enabled if available
+Not watching /workspace/My-project/source since the file system is not supported
+File system watching is active
+Starting Build
+Downloading https://plugins.gradle.org/m2/org/gradle/toolchains/foojay-resolver-convention/org.gradle.toolchains.foojay-resolver-convention.gradle.plugin/0.7.0/org.gradle.toolchains.foojay-resolver-convention.gradle.plugin-0.7.0.pom to /workspace/gradle-cache/.tmp/gradle_download15494646374500190005bin
+Resource missing. [HTTP HEAD: https://plugins.gradle.org/m2/org/gradle/toolchains/foojay-resolver-convention/org.gradle.toolchains.foojay-resolver-convention.gradle.plugin/0.7.0/org.gradle.toolchains.foojay-resolver-convention.gradle.plugin-0.7.0.jar]
+Downloading https://plugins.gradle.org/m2/org/gradle/toolchains/foojay-resolver/0.7.0/foojay-resolver-0.7.0.pom to /workspace/gradle-cache/.tmp/gradle_download2065770186043803162bin
+Downloading https://plugins.gradle.org/m2/org/gradle/toolchains/foojay-resolver/0.7.0/foojay-resolver-0.7.0.module to /workspace/gradle-cache/.tmp/gradle_download14241267298375690480bin
+Downloading https://plugins.gradle.org/m2/com/google/code/gson/gson/2.9.1/gson-2.9.1.pom to /workspace/gradle-cache/.tmp/gradle_download10654695065709411669bin
+Downloading https://plugins.gradle.org/m2/com/google/code/gson/gson-parent/2.9.1/gson-parent-2.9.1.pom to /workspace/gradle-cache/.tmp/gradle_download16857977515590092793bin
+Downloading https://plugins.gradle.org/m2/org/sonatype/oss/oss-parent/9/oss-parent-9.pom to /workspace/gradle-cache/.tmp/gradle_download12407233066407687830bin
+Downloading https://plugins.gradle.org/m2/org/gradle/toolchains/foojay-resolver/0.7.0/foojay-resolver-0.7.0.jar to /workspace/gradle-cache/.tmp/gradle_download18326303954568284640bin
+Downloading https://plugins.gradle.org/m2/com/google/code/gson/gson/2.9.1/gson-2.9.1.jar to /workspace/gradle-cache/.tmp/gradle_download4143555556409441865bin
+Transforming foojay-resolver-0.7.0.jar (org.gradle.toolchains:foojay-resolver:0.7.0) with InstrumentationAnalysisTransform
+Transforming gson-2.9.1.jar (com.google.code.gson:gson:2.9.1) with InstrumentationAnalysisTransform
+Caching disabled for InstrumentationAnalysisTransform: /workspace/gradle-cache/caches/modules-2/files-2.1/org.gradle.toolchains/foojay-resolver/0.7.0/ed9c0364d25418b68e5b9af7a21f0aceca693fa/foojay-resolver-0.7.0.jar because:
+  Build cache is disabled
+  Caching not enabled.
+Caching disabled for InstrumentationAnalysisTransform: /workspace/gradle-cache/caches/modules-2/files-2.1/com.google.code.gson/gson/2.9.1/2cc2131b98ebfb04e2b2c7dfb84431f4045096b/gson-2.9.1.jar because:
+  Build cache is disabled
+  Caching not enabled.
+Transforming foojay-resolver-0.7.0.jar (org.gradle.toolchains:foojay-resolver:0.7.0) with InstrumentationAnalysisTransform
+Transforming foojay-resolver-0.7.0.jar (org.gradle.toolchains:foojay-resolver:0.7.0) with MergeInstrumentationAnalysisTransform
+Transforming gson-2.9.1.jar (com.google.code.gson:gson:2.9.1) with InstrumentationAnalysisTransform
+Transforming gson-2.9.1.jar (com.google.code.gson:gson:2.9.1) with MergeInstrumentationAnalysisTransform
+Caching disabled for MergeInstrumentationAnalysisTransform: /workspace/gradle-cache/caches/8.8/transforms/da8fef3ca6459241107d8b3849dbe6f8/transformed/.gradle-instrumented-classpath.marker because:
+  Build cache is disabled
+  Caching not enabled.
+Caching disabled for MergeInstrumentationAnalysisTransform: /workspace/gradle-cache/caches/8.8/transforms/5eef628ac9c64d3f5bccf661eeecceb6/transformed/analysis/instrumentation-hierarchy.bin because:
+  Build cache is disabled
+  Caching not enabled.
+Caching disabled for MergeInstrumentationAnalysisTransform: /workspace/gradle-cache/caches/8.8/transforms/da8fef3ca6459241107d8b3849dbe6f8/transformed/analysis/instrumentation-hierarchy.bin because:
+  Build cache is disabled
+  Caching not enabled.
+Caching disabled for MergeInstrumentationAnalysisTransform: /workspace/gradle-cache/caches/8.8/transforms/5eef628ac9c64d3f5bccf661eeecceb6/transformed/analysis/instrumentation-dependencies.bin because:
+  Build cache is disabled
+  Caching not enabled.
+Caching disabled for MergeInstrumentationAnalysisTransform: /workspace/gradle-cache/caches/8.8/transforms/da8fef3ca6459241107d8b3849dbe6f8/transformed/analysis/instrumentation-dependencies.bin because:
+  Build cache is disabled
+  Caching not enabled.
+Caching disabled for MergeInstrumentationAnalysisTransform: /workspace/gradle-cache/caches/modules-2/files-2.1/com.google.code.gson/gson/2.9.1/2cc2131b98ebfb04e2b2c7dfb84431f4045096b/gson-2.9.1.jar because:
+  Build cache is disabled
+  Caching not enabled.
+Caching disabled for MergeInstrumentationAnalysisTransform: /workspace/gradle-cache/caches/modules-2/files-2.1/org.gradle.toolchains/foojay-resolver/0.7.0/ed9c0364d25418b68e5b9af7a21f0aceca693fa/foojay-resolver-0.7.0.jar because:
+  Build cache is disabled
+  Caching not enabled.
+Transforming gson-2.9.1.jar (com.google.code.gson:gson:2.9.1) with ExternalDependencyInstrumentingArtifactTransform
+Caching disabled for ExternalDependencyInstrumentingArtifactTransform: /workspace/gradle-cache/caches/8.8/transforms/8c069aa961c43997f668550cb864285d/transformed/.gradle-instrumented-classpath.marker because:
+  Build cache is disabled
+  Caching not enabled.
+Transforming foojay-resolver-0.7.0.jar (org.gradle.toolchains:foojay-resolver:0.7.0) with ExternalDependencyInstrumentingArtifactTransform
+Caching disabled for ExternalDependencyInstrumentingArtifactTransform: /workspace/gradle-cache/caches/8.8/transforms/8c069aa961c43997f668550cb864285d/transformed/merge/instrumentation-dependencies.bin because:
+  Build cache is disabled
+  Caching not enabled.
+Caching disabled for ExternalDependencyInstrumentingArtifactTransform: /workspace/gradle-cache/caches/8.8/transforms/3f900551ad6b477e4be1bacb6e805cce/transformed/merge/instrumentation-dependencies.bin because:
+  Build cache is disabled
+  Caching not enabled.
+Caching disabled for ExternalDependencyInstrumentingArtifactTransform: /workspace/gradle-cache/caches/modules-2/files-2.1/org.gradle.toolchains/foojay-resolver/0.7.0/ed9c0364d25418b68e5b9af7a21f0aceca693fa/foojay-resolver-0.7.0.jar because:
+  Build cache is disabled
+  Caching not enabled.
+Caching disabled for ExternalDependencyInstrumentingArtifactTransform: /workspace/gradle-cache/caches/modules-2/files-2.1/com.google.code.gson/gson/2.9.1/2cc2131b98ebfb04e2b2c7dfb84431f4045096b/gson-2.9.1.jar because:
+  Build cache is disabled
+  Caching not enabled.
+Caching disabled for Groovy DSL script compilation (settings) because:
+  Build cache is disabled
+  Not worth caching.
+Compiling settings file '/workspace/My-project/source/settings.gradle' using BuildScriptTransformer.
+Settings evaluated using settings file '/workspace/My-project/source/settings.gradle'.
+Projects loaded. Root project using build file '/workspace/My-project/source/build.gradle'.
+Included projects: [root project 'source']
+
+> Configure project :
+Evaluating root project 'source' using build file '/workspace/My-project/source/build.gradle'.
+Caching disabled for Groovy DSL script compilation (cp_proj) because:
+  Build cache is disabled
+  Not worth caching.
+Compiling build file '/workspace/My-project/source/build.gradle' using SubsetScriptTransformer.
+Resource missing. [HTTP GET: https://repo.maven.apache.org/maven2/net/minecraftforge/gradle/net.minecraftforge.gradle.gradle.plugin/6.0.54/net.minecraftforge.gradle.gradle.plugin-6.0.54.pom]
+Failed to get resource: GET. [HTTP HTTP/1.1 403 Forbidden: https://maven.minecraftforge.net/net/minecraftforge/gradle/net.minecraftforge.gradle.gradle.plugin/6.0.54/net.minecraftforge.gradle.gradle.plugin-6.0.54.pom)]
+
+FAILURE: Build failed with an exception.
+
+* Where:
+Build file '/workspace/My-project/source/build.gradle' line: 4
+
+* What went wrong:
+Plugin [id: 'net.minecraftforge.gradle', version: '6.0.54'] was not found in any of the following sources:
+
+- Gradle Core Plugins (plugin is not in 'org.gradle' namespace)
+- Included Builds (No included builds contain this plugin)
+- Plugin Repositories (could not resolve plugin artifact 'net.minecraftforge.gradle:net.minecraftforge.gradle.gradle.plugin:6.0.54')
+  Searched in the following repositories:
+    Gradle Central Plugin Repository
+    MinecraftForge(https://maven.minecraftforge.net/)
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 7s
+Some of the file system contents retained in the virtual file system are on file systems that Gradle doesn't support watching. The relevant state was discarded to ensure changes to these locations are properly detected. You can override this by explicitly enabling file system watching.

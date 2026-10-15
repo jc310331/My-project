@@ -18,6 +18,14 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 ACTIONS = {'none', 'follow', 'stay', 'resident', 'home', 'status', 'collect', 'explore'}
 LIMIT = 16384
 
+class RejectRedirects(urllib.request.HTTPRedirectHandler):
+    """Provider credentials must never follow a redirect to another endpoint."""
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+def provider_opener():
+    return urllib.request.build_opener(RejectRedirects())
+
 def validate_plan(plan):
     if not isinstance(plan, dict) or set(plan) != {'action', 'reply'}:
         raise ValueError('Expected action and reply only')
@@ -96,7 +104,7 @@ class Planner:
         headers['Content-Type'] = 'application/json'
         # Fixed provider hosts; credentials never returned in errors or stored in SQLite.
         req = urllib.request.Request(url, json.dumps(body).encode(), headers)
-        with urllib.request.urlopen(req, timeout=20) as response:
+        with provider_opener().open(req, timeout=20) as response:
             raw = response.read(262145)
             if len(raw) > 262144:
                 raise ValueError('Provider response too large')
@@ -131,7 +139,8 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         if self.path != '/v1/plan':
             return self.respond(404, {'error': 'Unknown endpoint'})
-        if self.headers.get('Origin') or not hmac.compare_digest(self.headers.get('Authorization', ''), 'Bearer ' + self.server.token):
+        authorization = self.headers.get('Authorization', '')
+        if self.headers.get('Origin') or not hmac.compare_digest(authorization.encode('utf-8'), ('Bearer ' + self.server.token).encode('utf-8')):
             return self.respond(403, {'error': 'Unauthorized'})
         if self.headers.get('Content-Type') != 'application/json' or self.headers.get('Transfer-Encoding'):
             return self.respond(415, {'error': 'Expected JSON'})

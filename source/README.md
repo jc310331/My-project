@@ -1,4 +1,4 @@
-# Project Socrates 0.3.0 — experimental test release
+# Project Socrates 0.3.1 — experimental test release
 
 Minecraft Java **1.20.1**, Forge **47.4.10**, Java **17**.
 This is a real compiled Forge mod with a separate optional Python planner.
@@ -8,7 +8,7 @@ It is an early companion, not yet a general-purpose AI Minecraft player.
 
 1. Create a **new** Prism instance named `Socrates Test`: Minecraft 1.20.1,
    Forge 47.4.10. Select a **Java 17** installation in instance settings.
-2. Open that instance's Minecraft folder. Put `socrates-0.3.0.jar` in `mods`.
+2. Open that instance's Minecraft folder. Put `socrates-0.3.1.jar` in `mods`.
    Install only the normal JAR, not the source JAR or ZIP. Remove any older
    `companion` prototype from this TEST instance to avoid duplicate mod IDs.
 3. Start a new disposable Creative world with cheats enabled.
@@ -116,7 +116,7 @@ cd ai
 python -m unittest -v
 ```
 
-Output: `build/libs/socrates-0.3.0.jar`. `build-windows.ps1` wraps the build.
+Output: `build/libs/socrates-0.3.1.jar`. `build-windows.ps1` wraps the build.
 Linux/macOS use `./gradlew` instead of `.\gradlew.bat`.
 
 For the optional Java→Python integration test, start Python in a separate terminal
@@ -128,4 +128,4 @@ with `--instance run-gametest` from this project, then run:
 
 This creates a disposable `run-gametest/world` in the project. Skipping asset downloads
 is appropriate for headless tests. Use `runClient` normally for graphical development.
-See `docs/TEST-RESULTS.md` for what was actually verified and what remains untested.
+See `docs/TEST-RESULTS-0.3.1.md` for current results and `docs/TEST-RESULTS.md` for historical 0.3.0 evidence.

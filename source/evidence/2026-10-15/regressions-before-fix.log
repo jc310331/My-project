@@ -1,0 +1,89 @@
+test_http_non_ascii_authorization (test_service.HttpTests.test_http_non_ascii_authorization) ... ----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 39820)
+Traceback (most recent call last):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/tmp/socrates-regression-8uwv21ky/service.py", line 134, in do_POST
+    if self.headers.get('Origin') or not hmac.compare_digest(self.headers.get('Authorization', ''), 'Bearer ' + self.server.token):
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: comparing strings with non-ASCII characters is not supported
+----------------------------------------
+ERROR
+test_redirect_does_not_forward_credentials (test_service.ProviderTransportTests.test_redirect_does_not_forward_credentials) ... 
+  test_redirect_does_not_forward_credentials (test_service.ProviderTransportTests.test_redirect_does_not_forward_credentials) (code=301) ... FAIL
+  test_redirect_does_not_forward_credentials (test_service.ProviderTransportTests.test_redirect_does_not_forward_credentials) (code=302) ... FAIL
+  test_redirect_does_not_forward_credentials (test_service.ProviderTransportTests.test_redirect_does_not_forward_credentials) (code=303) ... FAIL
+
+======================================================================
+ERROR: test_http_non_ascii_authorization (test_service.HttpTests.test_http_non_ascii_authorization)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/socrates-regression-8uwv21ky/test_service.py", line 81, in test_http_non_ascii_authorization
+    with self.assertRaises(urllib.error.HTTPError) as c:self.send('wrong-\u00e9')
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/socrates-regression-8uwv21ky/test_service.py", line 74, in send
+    return self.opener.open(req, timeout=3)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/urllib/request.py", line 515, in open
+    response = self._open(req, data)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/urllib/request.py", line 532, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/urllib/request.py", line 492, in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/urllib/request.py", line 1373, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/urllib/request.py", line 1348, in do_open
+    r = h.getresponse()
+        ^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/http/client.py", line 1478, in getresponse
+    response.begin()
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/http/client.py", line 343, in begin
+    version, status, reason = self._read_status()
+                              ^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/http/client.py", line 312, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+http.client.RemoteDisconnected: Remote end closed connection without response
+
+======================================================================
+FAIL: test_redirect_does_not_forward_credentials (test_service.ProviderTransportTests.test_redirect_does_not_forward_credentials) (code=301)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/socrates-regression-8uwv21ky/test_service.py", line 118, in test_redirect_does_not_forward_credentials
+    with self.assertRaises(urllib.error.HTTPError) as error:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: HTTPError not raised
+
+======================================================================
+FAIL: test_redirect_does_not_forward_credentials (test_service.ProviderTransportTests.test_redirect_does_not_forward_credentials) (code=302)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/socrates-regression-8uwv21ky/test_service.py", line 118, in test_redirect_does_not_forward_credentials
+    with self.assertRaises(urllib.error.HTTPError) as error:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: HTTPError not raised
+
+======================================================================
+FAIL: test_redirect_does_not_forward_credentials (test_service.ProviderTransportTests.test_redirect_does_not_forward_credentials) (code=303)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/socrates-regression-8uwv21ky/test_service.py", line 118, in test_redirect_does_not_forward_credentials
+    with self.assertRaises(urllib.error.HTTPError) as error:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: HTTPError not raised
+
+----------------------------------------------------------------------
+Ran 2 tests in 3.076s
+
+FAILED (failures=3, errors=1)

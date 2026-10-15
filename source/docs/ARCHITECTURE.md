@@ -1,4 +1,4 @@
-# Architecture — current 0.3.0
+# Architecture — current 0.3.1
 
 Forge owns the physical entity, navigation, equipment, nine-slot inventory, home,
 mode, current task and remaining task ticks. Entity state is persisted in world NBT.
@@ -24,8 +24,9 @@ remaining time. Autonomy is opt-in and requests a plan when idle with its owner 
 Offline autonomy alternates collect/explore proposals; it is not reasoning by an LLM.
 
 ## Next engineering priorities
-1. Install the production JAR in a disposable client; verify rendering/skins,
-   actual owner-follow/commands, save/reopen behavior, and full async talk flow.
+1. Complete Windows Prism/modpack and broader terrain/animation testing.
+   Linux production-JAR rendering, PNGs/equipment, flat-platform owner following,
+   and async offline conversation have now been exercised; see the 0.3.1 report.
 2. Add precise action acknowledgements so SQLite distinguishes proposed, accepted,
    running, completed and failed goals. Do not treat proposals as accomplished work.
 3. Improve stuck detection, real observation/state snapshots, unloaded entity
@@ -38,3 +39,16 @@ Offline autonomy alternates collect/explore proposals; it is not reasoning by an
 Crafting, building and Create machinery require explicit tested adapters. A
 PathfinderMob is not a network player; do not promise general mod compatibility
 or human-like capabilities from the current goal set.
+
+## 0.3.1 scheduler correction
+Custom follow, home-return and collection goals request updates every tick, while
+path requests remain throttled to 10/20 ticks. This avoids an entity-ID phase in
+Minecraft's alternating goal scheduler that never coincided with the modulo timer.
+Collection also revalidates the item on every tick before inserting it; goal
+eligibility itself is checked less frequently. An engine regression uses opposite
+entity-ID phases and per-run tagged stacks to assert exact counts/no duplication.
+
+Dropped-item navigation requests an exact target block (reach tolerance zero),
+while pickup still requires the original distance and line-of-sight checks. An
+off-center engine fixture reproduces the production approach that previously
+stopped short; the final production JAR was also retested at that location.

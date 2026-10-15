@@ -6,7 +6,7 @@ import unittest
 import urllib.request
 import urllib.error
 import uuid
-from service import Planner, Server, validate_plan
+from service import Planner, Server, validate_plan, provider_opener
 
 class PlannerTests(unittest.TestCase):
     def setUp(self):
@@ -52,7 +52,8 @@ class PlannerTests(unittest.TestCase):
             def __exit__(self,*args):pass
             def read(self,n):return json.dumps({'output':[{'content':[{'type':'output_text','text':'{"action":"execute","reply":"bad"}'}]}]}).encode()
         from unittest.mock import patch
-        with patch.dict('os.environ',{'OPENAI_API_KEY':'test-not-real'}), patch('urllib.request.urlopen',return_value=Response()):
+        with patch.dict('os.environ',{'OPENAI_API_KEY':'test-not-real'}), patch('service.provider_opener') as opener:
+            opener.return_value.open.return_value = Response()
             with self.assertRaises(ValueError):Planner(self.path,'openai','test-model').cloud('test',[])
 
 class HttpTests(unittest.TestCase):
@@ -76,6 +77,10 @@ class HttpTests(unittest.TestCase):
     def test_http_wrong_token(self):
         with self.assertRaises(urllib.error.HTTPError) as c:self.send('wrong')
         self.assertEqual(c.exception.code,403)
+    def test_http_non_ascii_authorization(self):
+        with self.assertRaises(urllib.error.HTTPError) as c:self.send('wrong-\u00e9')
+        self.assertEqual(c.exception.code,403)
+        with self.send() as r:self.assertEqual(json.load(r)['action'],'follow')
     def test_http_browser_origin(self):
         with self.assertRaises(urllib.error.HTTPError) as c:self.send(extra={'Origin':'http://example.com'})
         self.assertEqual(c.exception.code,403)
@@ -85,5 +90,36 @@ class HttpTests(unittest.TestCase):
     def test_http_malformed(self):
         with self.assertRaises(urllib.error.HTTPError) as c:self.send(raw=b'{bad')
         self.assertEqual(c.exception.code,400)
+
+class ProviderTransportTests(unittest.TestCase):
+    def test_redirect_does_not_forward_credentials(self):
+        from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+        from unittest.mock import patch
+        for code in (301, 302, 303, 307, 308):
+            with self.subTest(code=code):
+                received = []
+                class Redirect(BaseHTTPRequestHandler):
+                    def log_message(self, *_):pass
+                    def do_POST(self):
+                        received.append((self.path, self.headers.get('Authorization')))
+                        self.send_response(code)
+                        self.send_header('Location', '/credential-sink')
+                        self.send_header('Content-Length', '0')
+                        self.end_headers()
+                    def do_GET(self):
+                        received.append((self.path, self.headers.get('Authorization')))
+                        self.send_response(200);self.end_headers()
+                server = ThreadingHTTPServer(('127.0.0.1', 0), Redirect)
+                thread = threading.Thread(target=server.serve_forever, daemon=True)
+                thread.start()
+                try:
+                    request = urllib.request.Request('http://127.0.0.1:' + str(server.server_port) + '/provider', b'{}', {'Authorization':'Bearer fake-regression-token'})
+                    with patch.dict('os.environ', {'no_proxy':'127.0.0.1','NO_PROXY':'127.0.0.1'}):
+                        with self.assertRaises(urllib.error.HTTPError) as error:
+                            provider_opener().open(request, timeout=3)
+                    self.assertEqual(error.exception.code, code)
+                    self.assertEqual(received, [('/provider', 'Bearer fake-regression-token')])
+                finally:
+                    server.shutdown();server.server_close();thread.join()
 
 if __name__=='__main__':unittest.main()

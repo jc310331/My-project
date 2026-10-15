@@ -1,3 +1,5 @@
+> Original 0.3.0 handoff retained below. The latest continuation is 0.3.1; read ../START-HERE.md and docs/TEST-RESULTS-0.3.1.md.
+
 # Project Socrates — handoff to the next coding agent / Dot
 
 Read README.md, docs/TEST-RESULTS.md and docs/ARCHITECTURE.md first.

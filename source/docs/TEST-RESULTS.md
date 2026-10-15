@@ -1,3 +1,5 @@
+> Historical 0.3.0 report, preserved from the supplied handoff. Current continuation results are in [TEST-RESULTS-0.3.1.md](TEST-RESULTS-0.3.1.md).
+
 # Verified results — 2026-10-14
 
 ## Environment

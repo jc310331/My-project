@@ -84,6 +84,9 @@ public class SocratesEntity extends PathfinderMob {
                 return mode==Mode.ADVENTURE && target!=null && !target.isSpectator() && distanceToSqr(target)>9 && distanceToSqr(target)<2304;
             }
             public boolean canContinueToUse() { return canUse(); }
+            // Mob staggers normal goals by entity ID; tickCount%10 would otherwise
+            // never run for one of the two phases. Navigation remains throttled.
+            @Override public boolean requiresUpdateEveryTick() { return true; }
             public void tick() {
                 getLookControl().setLookAt(target,30,30);
                 if(tickCount%10==0) getNavigation().moveTo(target,1.1);
@@ -93,6 +96,7 @@ public class SocratesEntity extends PathfinderMob {
         goalSelector.addGoal(4,new Goal() {
             { setFlags(EnumSet.of(Flag.MOVE)); }
             public boolean canUse() { return (mode==Mode.RESIDENT || (mode==Mode.HELPER && !task.isEmpty())) && home!=null && home.distSqr(blockPosition())>(level().isDay()?144:4); }
+            @Override public boolean requiresUpdateEveryTick() { return true; }
             public void tick() { if(tickCount%20==0) getNavigation().moveTo(home.getX()+0.5,home.getY(),home.getZ()+0.5,1); }
             public void stop() { getNavigation().stop(); }
         });
@@ -105,12 +109,22 @@ public class SocratesEntity extends PathfinderMob {
                 return item!=null;
             }
             public boolean canContinueToUse() {return mode==Mode.HELPER && task.equals("collect") && item!=null && item.isAlive() && !item.hasPickUpDelay() && distanceToSqr(item)<144 && home.distSqr(item.blockPosition())<=144 && inventory.canAddItem(item.getItem());}
+            @Override public boolean requiresUpdateEveryTick() { return true; }
             public void tick() {
+                // Goal eligibility is only refreshed on alternating server ticks.
+                // Revalidate here too: an item discarded on the previous tick
+                // must never be inserted into the inventory a second time.
+                if(!canContinueToUse()) {getNavigation().stop();return;}
                 getLookControl().setLookAt(item,30,30);
                 if(distanceToSqr(item)<2.25 && hasLineOfSight(item)) {
                     var remaining=inventory.addItem(item.getItem().copy());
                     if(remaining.isEmpty())item.discard();else item.setItem(remaining);
-                } else if(tickCount%10==0)getNavigation().moveTo(item,0.8);
+                } else if(tickCount%10==0) {
+                    // The entity overload accepts a path ending one block away;
+                    // an off-center diagonal approach can then stop outside the
+                    // existing 1.5-block pickup reach. Request the target block.
+                    getNavigation().moveTo(getNavigation().createPath(item,0),0.8);
+                }
             }
             public void stop() {getNavigation().stop();item=null;}
         });

@@ -1,0 +1,4 @@
+Authenticated loopback request passed: follow me
+Authenticated loopback request passed: remember cloud smoke verified
+Authenticated loopback request passed: what do you remember?
+Service startup and SQLite recall verified; this is a Python client, not the Minecraft engine.

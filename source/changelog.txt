@@ -1,3 +1,12 @@
+0.3.1 — 2026-10-15
+- Fix alternating goal-update phase starvation in follow, return-home, and dropped-item collection.
+- Revalidate item state on every collection tick to prevent duplicate pickup.
+- Add an actual-engine regression covering opposite entity-ID phases and exact item counts.
+- Fix off-center dropped-item approaches stopping outside pickup reach; add engine regression.
+- Reject provider HTTP redirects and handle malformed non-ASCII local authorization headers.
+- Add reproducible cloud toolchain and isolated production-client validation helpers.
+- See docs/TEST-RESULTS-0.3.1.md for verified behavior and remaining limits.
+
 1.20.1 Changelog
 47.4
 ====

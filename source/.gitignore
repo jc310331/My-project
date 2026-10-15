@@ -1,0 +1,9 @@
+.gradle/
+build/
+run/
+run-server/
+run-gametest/
+__pycache__/
+*.sqlite3*
+bridge.json
+.env

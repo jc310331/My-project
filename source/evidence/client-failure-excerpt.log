@@ -1,0 +1,132 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.8/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :compileJava UP-TO-DATE
+> Task :processResources
+> Task :classes
+> Task :jar
+> Task :downloadMcpConfig
+> Task :extractSrg UP-TO-DATE
+> Task :createMcpToSrg UP-TO-DATE
+> Task :reobfJar
+> Task :jarJar SKIPPED
+> Task :reobfJarJar SKIPPED
+> Task :sourcesJar
+> Task :assemble
+> Task :compileTestJava NO-SOURCE
+> Task :processTestResources NO-SOURCE
+> Task :testClasses UP-TO-DATE
+> Task :test NO-SOURCE
+> Task :check UP-TO-DATE
+> Task :build
+> Task :createSrgToMcp UP-TO-DATE
+> Task :downloadMCMeta UP-TO-DATE
+> Task :extractNatives UP-TO-DATE
+> Task :makeSrcDirs
+> Task :prepareRuns
+> Task :prepareRunClient
+> Task :prepareRunClientCompile
+
+> Task :runClient
+2026-10-14 02:52:22,533 main WARN Advanced terminal features are not available in this environment
+[02:52:22] [main/INFO] [cp.mo.mo.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgeclientuserdev, --version, MOD_DEV, --assetIndex, 5, --assetsDir, /tmp/socrates-gradle-home/caches/forge_gradle/assets, --gameDir, ., --fml.forgeVersion, 47.4.10, --fml.mcVersion, 1.20.1, --fml.forgeGroup, net.minecraftforge, --fml.mcpVersion, 20230612.114412]
+[02:52:22] [main/INFO] [cp.mo.mo.Launcher/MODLAUNCHER]: ModLauncher 10.0.9+10.0.9+main.dcd20f30 starting: java version 17.0.20.1 by Eclipse Adoptium; OS Linux arch amd64 version 6.18.44
+[02:52:22] [main/WARN] [ne.mi.fm.lo.FMLConfig/CORE]: Configuration file /workspace/scratch/a9cdcd7cbd59/socrates/run/config/fml.toml is not correct. Correcting
+[02:52:22] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowSkipGLVersions] was corrected from null to []
+[02:52:22] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowLogHelpMessage] was corrected from null to true
+[02:52:22] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowSquir] was corrected from null to false
+[02:52:22] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowShowCPU] was corrected from null to false
+[02:52:22] [main/INFO] [ne.mi.fm.lo.ImmediateWindowHandler/]: Loading ImmediateWindowProvider fmlearlywindow
+error: XDG_RUNTIME_DIR is invalid or not set in the environment.
+[02:52:22] [main/ERROR] [EARLYDISPLAY/]: ERROR DISPLAY
+Failed to initialize graphics window with current settings.
+
+
+Failure details:
+We are unable to initialize the graphics system.
+glfwInit failed.
+
+
+If you click yes, we will try and open https://links.minecraftforge.net/early-display-errors in your default browser
+Exception in thread "main" java.lang.IllegalStateException: Unable to initialize GLFW
+	at MC-BOOTSTRAP/fmlearlydisplay@1.20.1-47.4.10/net.minecraftforge.fml.earlydisplay.DisplayWindow.initWindow(DisplayWindow.java:348)
+	at MC-BOOTSTRAP/fmlearlydisplay@1.20.1-47.4.10/net.minecraftforge.fml.earlydisplay.DisplayWindow.start(DisplayWindow.java:291)
+	at MC-BOOTSTRAP/fmlearlydisplay@1.20.1-47.4.10/net.minecraftforge.fml.earlydisplay.DisplayWindow.initialize(DisplayWindow.java:154)
+	at MC-BOOTSTRAP/fmlloader@1.20.1-47.4.10/net.minecraftforge.fml.loading.ImmediateWindowHandler.load(ImmediateWindowHandler.java:48)
+	at MC-BOOTSTRAP/fmlloader@1.20.1-47.4.10/net.minecraftforge.fml.loading.ModDirTransformerDiscoverer.earlyInitialization(ModDirTransformerDiscoverer.java:43)
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@10.0.9/cpw.mods.modlauncher.TransformationServicesHandler.lambda$discoverServices$18(TransformationServicesHandler.java:131)
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@10.0.9/cpw.mods.modlauncher.TransformationServicesHandler.discoverServices(TransformationServicesHandler.java:131)
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@10.0.9/cpw.mods.modlauncher.Launcher.run(Launcher.java:87)
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@10.0.9/cpw.mods.modlauncher.Launcher.main(Launcher.java:78)
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@10.0.9/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26)
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@10.0.9/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23)
+	at cpw.mods.bootstraplauncher@1.1.2/cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:141)
+
+
+missing software! (we will try basic console input)
+ ___________
+/           \ 
+| tiny file |
+|  dialogs  |
+\_____  ____/
+      \|
+tiny file dialogs on UNIX needs:
+   applescript or kdialog or yad or Xdialog
+or zenity (or matedialog or shellementary or qarma)
+or python (2 or 3) + tkinter + python-dbus (optional)
+or dialog (opens console if needed)
+or xterm + bash (opens console for basic input)
+or existing console for basic input
+
+
+Minecraft: Forge
+
+Failed to initialize graphics window with current settings.
+
+
+Failure details:
+We are unable to initialize the graphics system.
+glfwInit failed.
+
+
+If you click yes, we will try and open https://links.minecraftforge.net/early-display-errors in your default browser
+y/n: 
+
+
+Failed to initialize graphics window with current settings.
+
+
+Failure details:
+We are unable to initialize the graphics system.
+glfwInit failed.
+
+
+If you click yes, we will try and open https://links.minecraftforge.net/early-display-errors in your default browser
+y/n: 
+
+
+Failed to initialize graphics window with current settings.
+
+
+Failure details:
+We are unable to initialize the graphics system.
+glfwInit failed.
+
+
+If you click yes, we will try and open https://links.minecraftforge.net/early-display-errors in your default browser
+y/n: 
+
+
+Failed to initialize graphics window with current settings.
+
+
+Failure details:
+We are unable to initialize the graphics system.
+glfwInit failed.
+
+
+If you click yes, we will try and open https://links.minecraftforge.net/early-display-errors in your default browser
+y/n: 
+
+
+[Excerpt ends. Repeated GLFW dialog prompts omitted. Process was interrupted; execution environment subsequently disconnected, then recovered.]

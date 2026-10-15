@@ -30,3 +30,8 @@ Keep `PROGRESS.md` current and deliver complete source, versioned artifacts, set
 instructions, and honest evidence. Retain code and history in portable checkpoints.
 Do not promise background work between sessions without an actual persistent runner.
 Ask only for genuine missing decisions/access after useful independent work.
+
+The user wants MCA-style right-click interactions instead of command-only play.
+Maintain the owner menu, in-menu conversation, live status and appearance controls.
+Menu packets must validate owner/dimension/range on the server thread; everyday
+owner actions must not require OP. Read the current versioned test report.

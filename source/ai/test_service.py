@@ -34,6 +34,16 @@ class PlannerTests(unittest.TestCase):
         self.planner.plan(self.request)
         self.request.update(world=str(uuid.uuid4()), text='memories')
         self.assertNotIn('private fact', self.planner.plan(self.request)['reply'])
+    def test_conversation_topics_do_not_start_goals(self):
+        for text in ('Hello, Socrates.', 'What can you help with?', 'What should we do next?', 'Why are you called Socrates?'):
+            self.request['text'] = text
+            result = self.planner.plan(self.request)
+            self.assertEqual(result['action'], 'none')
+            self.assertNotIn('Offline conversation:', result['reply'])
+        with self.planner.connect() as db:
+            self.assertEqual(db.execute('SELECT COUNT(*) FROM goals').fetchone()[0], 0)
+        self.request['text'] = 'What can you help with?'
+        self.assertIn('cannot mine', self.planner.plan(self.request)['reply'])
     def test_unknown_action_rejected(self):
         with self.assertRaises(ValueError): validate_plan({'action':'op @a','reply':'okay'})
     def test_extra_parameters_rejected(self):

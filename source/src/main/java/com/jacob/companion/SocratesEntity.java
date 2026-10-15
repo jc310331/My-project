@@ -60,6 +60,14 @@ public class SocratesEntity extends PathfinderMob {
     public void setSkinUsername(String value) { entityData.set(SKIN,value); }
     public void setOwner(UUID value) { owner=value; }
     public UUID getOwner() { return owner; }
+    @Override protected net.minecraft.world.InteractionResult mobInteract(Player player,net.minecraft.world.InteractionHand hand) {
+        if(hand!=net.minecraft.world.InteractionHand.MAIN_HAND)return net.minecraft.world.InteractionResult.PASS;
+        if(!level().isClientSide && player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+            if(InteractionActions.canControl(player,this))InteractionNetwork.open(serverPlayer,this);
+            else player.sendSystemMessage(Component.literal("Only Socrates's nearby owner can open this menu."));
+        }
+        return net.minecraft.world.InteractionResult.sidedSuccess(level().isClientSide);
+    }
     public Mode getMode() { return mode; }
     public void setMode(Mode value) { mode=value; task="";taskTicks=0;planRevision++;if(value==Mode.STAY)autonomy=false;getNavigation().stop(); }
     public void setHome(BlockPos value) { home=value.immutable();planRevision++;restrictTo(home,16); }

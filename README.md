@@ -17,7 +17,7 @@ python3 -m unittest discover -s ai -v
 SOCRATES_PROVIDER=offline python3 -u ai/service.py --instance run-gametest
 ```
 
-Keep the service in a separate terminal/session for the nine-test bridge suite:
+Keep the service in a separate terminal/session for the 13-test bridge suite:
 
 ```bash
 cd /workspace/My-project
@@ -53,3 +53,5 @@ This tests a real GLX context, **not Minecraft rendering**. A development
 `bash dev/gradle-cloud.sh runClient` is a separate check; installed-production-JAR
 and Windows Prism/modpack validation remain separate acceptance requirements.
 See `source/docs/PRISM-TEST-CHECKLIST.md`. No public localhost preview is needed.
+
+Latest milestone: [0.3.2 interaction menu and conversation topics](source/docs/TEST-RESULTS-0.3.2.md).

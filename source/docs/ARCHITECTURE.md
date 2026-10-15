@@ -1,4 +1,4 @@
-# Architecture — current 0.3.1
+# Architecture — current 0.3.2
 
 Forge owns the physical entity, navigation, equipment, nine-slot inventory, home,
 mode, current task and remaining task ticks. Entity state is persisted in world NBT.
@@ -52,3 +52,26 @@ Dropped-item navigation requests an exact target block (reach tolerance zero),
 while pickup still requires the original distance and line-of-sight checks. An
 off-center engine fixture reproduces the production approach that previously
 stopped short; the final production JAR was also retested at that location.
+
+## 0.3.2 interaction menu
+
+SocratesEntity.mobInteract opens an owner-only client screen through a bounded
+PLAY_TO_CLIENT packet. Client buttons send a UUID, action enum and bounded text;
+there are no arbitrary commands. The PLAY_TO_SERVER handler enqueues work on the
+server thread, finds the loaded entity in the player's dimension, and validates
+owner, alive/non-spectator state and six-block range. Unload additionally requires
+four blocks. Menu access does not require operator permission. Command shortcuts
+retain their original permissions.
+
+InteractionActions performs existing entity/inventory operations. Talk enters the
+existing asynchronous AiBridge, whose state revision and ownership checks remain.
+Responses are delivered to the matching menu and retained in chat diagnostics;
+menu replies omit diagnostic acceptance suffixes. Every 20 client ticks a bounded,
+quiet REFRESH requests authoritative mode/task/item-count/autonomy status. Rejected
+refreshes do not reveal another owner's status or overwrite known state.
+
+The client screen does not pause the world. Its conversation transcript is local
+to the open screen (30 entries); SQLite facts/exchanges remain in Python. Client
+rendering/input/portrait code is isolated behind Dist.CLIENT dispatch; the real
+headless engine suite checks dedicated-server loading. No new autonomy, mining,
+crafting, building or Create capabilities were added by the menu.

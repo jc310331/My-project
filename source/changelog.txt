@@ -1,3 +1,11 @@
+0.3.2 — 2026-10-15
+- Add owner right-click menu: following, staying, home, collection, exploration, unload, autonomy and skins.
+- Add in-menu asynchronous conversation, original topic suggestions and offline topic replies.
+- Validate ownership, dimension, range and payloads on the server; everyday owner actions need no OP.
+- Add quiet authoritative status refresh, compact layout, keyboard focus and skin-folder controls.
+- Add four real-engine interaction tests and a Python topic/no-goal regression.
+- See docs/TEST-RESULTS-0.3.2.md for evidence and limits.
+
 0.3.1 — 2026-10-15
 - Fix alternating goal-update phase starvation in follow, return-home, and dropped-item collection.
 - Revalidate item state on every collection tick to prevent duplicate pickup.

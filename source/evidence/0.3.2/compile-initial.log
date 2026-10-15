@@ -1,0 +1,14 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.8/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Task :compileJava
+/workspace/My-project/source/src/main/java/com/jacob/companion/InteractionNetwork.java:18: warning: [removal] ResourceLocation(String,String) in ResourceLocation has been deprecated and marked for removal
+        new ResourceLocation(CompanionMod.MODID, "interaction"), () -> VERSION, VERSION::equals, VERSION::equals);
+        ^
+/workspace/My-project/source/src/main/java/com/jacob/companion/CompanionMod.java:26: warning: [removal] get() in FMLJavaModLoadingContext has been deprecated and marked for removal
+        var bus=FMLJavaModLoadingContext.get().getModEventBus();
+                                        ^
+2 warnings
+
+BUILD SUCCESSFUL in 13s
+1 actionable task: 1 executed

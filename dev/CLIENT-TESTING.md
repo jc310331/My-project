@@ -45,7 +45,7 @@ The installer may log a denied optional mirror and then successfully fall back t
 Forge's official host. Require its final success and process exit 0.
 
 Copy **only one** Socrates version into the test folder's `mods/`. Build JAR:
-`source/build/libs/socrates-0.3.1.jar`. Do not include source JARs. The two fixture
+`source/build/libs/socrates-0.3.2.jar`. Do not include source JARs. The two fixture
 PNGs in `dev/fixtures/` can go into the test folder's `config/socrates/skins/`.
 
 ## Start and inspect

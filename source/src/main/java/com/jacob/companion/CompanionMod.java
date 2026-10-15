@@ -25,6 +25,7 @@ public class CompanionMod {
     public CompanionMod() {
         var bus=FMLJavaModLoadingContext.get().getModEventBus();
         ENTITIES.register(bus); bus.addListener(this::attributes); MinecraftForge.EVENT_BUS.register(this);
+        InteractionNetwork.register();
     }
     private void attributes(EntityAttributeCreationEvent event) { event.put(SOCRATES.get(),SocratesEntity.createAttributes().build()); }
     private SocratesEntity find(ServerPlayer p) {

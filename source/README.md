@@ -1,4 +1,4 @@
-# Project Socrates 0.3.1 — experimental test release
+# Project Socrates 0.3.2 — experimental test release
 
 Minecraft Java **1.20.1**, Forge **47.4.10**, Java **17**.
 This is a real compiled Forge mod with a separate optional Python planner.
@@ -8,17 +8,45 @@ It is an early companion, not yet a general-purpose AI Minecraft player.
 
 1. Create a **new** Prism instance named `Socrates Test`: Minecraft 1.20.1,
    Forge 47.4.10. Select a **Java 17** installation in instance settings.
-2. Open that instance's Minecraft folder. Put `socrates-0.3.1.jar` in `mods`.
+2. Open that instance's Minecraft folder. Put `socrates-0.3.2.jar` in `mods`.
    Install only the normal JAR, not the source JAR or ZIP. Remove any older
    `companion` prototype from this TEST instance to avoid duplicate mod IDs.
 3. Start a new disposable Creative world with cheats enabled.
-4. Run `/socrates spawn`, then `/socrates follow`.
+4. Run `/socrates spawn` once, then **right-click Socrates** to open his interaction menu.
 5. Run through `docs/PRISM-TEST-CHECKLIST.md` before adding other mods.
 
 No part of this project installs into or modifies your main Prism instance.
 Do not begin by testing against your survival save.
 
-## Controls
+## Right-click interaction menu
+
+Right-click your existing Socrates for a character preview, conversation box,
+**Talk, Follow, Stay, Set home here, Live at home, Collect drops, Explore, Unload
+items, Appearance**, and an explicit autonomy toggle. Everyday menu controls work
+for the nearby owner without operator permissions. The initial spawn command
+still requires cheats; routine interactions afterward do not.
+
+Click **Talk**, type normally, then Send or Enter. Replies appear in the menu;
+scroll the conversation with the mouse wheel. The optional Python service is
+still required for conversation. Movement, home, tasks and appearance work without
+it. The menu keeps the world running, refreshes status while nearby, and disables
+controls if you move out of range. Escape or Close returns to the world.
+
+**Set home here** means where Socrates is standing. **Live at home** selects his
+existing resident routine. **Collect drops** gathers dropped items, not blocks.
+Stay cancels his task and turns autonomy off.
+
+In **Appearance**, apply a username or `local:filename.png`. **Open skin folder**
+opens this instance's `config/socrates/skins`; put the PNG there first. This is
+not an operating-system file-picker/import wizard. Restart the client to retry
+failed cached lookups or reload a changed PNG. Autonomy remains off by default;
+configured cloud planning can incur API charges.
+
+When upgrading a TEST instance, close Minecraft, replace the older Socrates JAR
+with 0.3.2 (keep only one version), and reopen the disposable test world. Existing
+companions retain their saved owner and state.
+
+## Optional command controls
 
 | Command | Effect |
 |---|---|
@@ -42,7 +70,7 @@ Do not begin by testing against your survival save.
 | `/socrates autonomy on` | Opt into periodic planner proposals while idle |
 | `/socrates autonomy off` | Disable periodic requests |
 
-All commands require permission level 2 (enable cheats in the test world).
+These command shortcuts require permission level 2. The right-click owner menu does not.
 There is no teleport, dimension following, forced chunk loading, combat, mining,
 crafting, building, inventory GUI or Create machinery integration in this version.
 
@@ -116,7 +144,7 @@ cd ai
 python -m unittest -v
 ```
 
-Output: `build/libs/socrates-0.3.1.jar`. `build-windows.ps1` wraps the build.
+Output: `build/libs/socrates-0.3.2.jar`. `build-windows.ps1` wraps the build.
 Linux/macOS use `./gradlew` instead of `.\gradlew.bat`.
 
 For the optional Java→Python integration test, start Python in a separate terminal
@@ -128,4 +156,15 @@ with `--instance run-gametest` from this project, then run:
 
 This creates a disposable `run-gametest/world` in the project. Skipping asset downloads
 is appropriate for headless tests. Use `runClient` normally for graphical development.
-See `docs/TEST-RESULTS-0.3.1.md` for current results and `docs/TEST-RESULTS.md` for historical 0.3.0 evidence.
+See `docs/TEST-RESULTS-0.3.2.md` for current results and `docs/TEST-RESULTS.md` for historical 0.3.0 evidence.
+
+### Conversation topics (0.3.2)
+
+Right-click Socrates, then **Talk / Topics**. Choose a topic or type freely below.
+Memories reads the existing world/owner/companion-scoped SQLite facts. Remember a
+fact fills in `remember `; finish your sentence and press Send. Planning topics
+are conversation only; use an action button to start work. Offline mode provides
+small original topic replies; open-ended AI conversation needs a configured
+Gemini/OpenAI provider. No MCA installation is required. Personality progression,
+relationship levels, branching dialogue and village gossip are planned, not added.
+The screen transcript currently lasts only while that screen is open.

@@ -15,10 +15,10 @@ public final class AiBridge {
     private static final Map<UUID,Long> LAST=new ConcurrentHashMap<>();
     private static final ExecutorService WORKER=new ThreadPoolExecutor(1,1,0,TimeUnit.SECONDS,new ArrayBlockingQueue<>(4),r->{var t=new Thread(r,"Socrates planner");t.setDaemon(true);return t;},new ThreadPoolExecutor.AbortPolicy());
     public static void ask(ServerPlayer player,SocratesEntity s,String text) {
-        if(!player.getServer().isSingleplayer()) { player.sendSystemMessage(Component.literal("Socrates AI bridge is single-player only."));return; }
-        if(text.isBlank() || text.length()>1000) {player.sendSystemMessage(Component.literal("Use 1–1000 characters."));return;}
+        if(!player.getServer().isSingleplayer()) { InteractionNetwork.message(player,s,"Socrates AI bridge is single-player only.");return; }
+        if(text.isBlank() || text.length()>1000) {InteractionNetwork.message(player,s,"Use 1–1000 characters.");return;}
         long now=System.nanoTime();UUID owner=player.getUUID();
-        if(PENDING.contains(owner) || now-LAST.getOrDefault(owner,0L)<TimeUnit.SECONDS.toNanos(3)) {player.sendSystemMessage(Component.literal("Socrates is still thinking; try again shortly."));return;}
+        if(PENDING.contains(owner) || now-LAST.getOrDefault(owner,0L)<TimeUnit.SECONDS.toNanos(3)) {InteractionNetwork.message(player,s,"Socrates is still thinking; try again shortly.");return;}
         var server=player.getServer();var level=s.level();UUID entity=s.getUUID();int revision=s.getPlanRevision();
         var registry=server.overworld().getDataStorage().computeIfAbsent(CompanionRegistry::load,CompanionRegistry::new,"socrates_registry");
         var body=new JsonObject();body.addProperty("world",registry.worldId().toString());body.addProperty("owner",owner.toString());body.addProperty("entity",entity.toString());body.addProperty("text",text);
@@ -31,9 +31,9 @@ public final class AiBridge {
             server.execute(()->{
                 var current=server.getPlayerList().getPlayer(owner);
                 if(current==null)return;
-                if(error!=null) {current.sendSystemMessage(Component.literal(error));return;}
+                if(error!=null) {InteractionNetwork.message(current,s,error);return;}
                 if(!s.isAlive() || s.isRemoved() || !owner.equals(s.getOwner()) || s.level()!=level || current.level()!=level || s.getPlanRevision()!=revision || current.distanceToSqr(s)>4096) {
-                    current.sendSystemMessage(Component.literal("Discarded stale Socrates plan; state changed or companion is out of range."));return;
+                    InteractionNetwork.message(current,s,"Discarded stale Socrates plan; state changed or companion is out of range.");return;
                 }
                 String action=response.get("action").getAsString();
                 switch(action) {
@@ -41,12 +41,13 @@ public final class AiBridge {
                     case "stay" -> s.setMode(SocratesEntity.Mode.STAY);
                     case "resident" -> s.setMode(SocratesEntity.Mode.RESIDENT);
                     case "home" -> s.setHome(s.blockPosition());
-                    case "collect", "explore" -> { if(!s.setTask(action)) {current.sendSystemMessage(Component.literal("Task rejected: set home nearby first."));return;} }
+                    case "collect", "explore" -> { if(!s.setTask(action)) {InteractionNetwork.message(current,s,"Task rejected: set home nearby first.");return;} }
                     default -> { }
                 }
-                current.sendSystemMessage(Component.literal("Socrates: "+response.get("reply").getAsString()+" [accepted: "+action+"; mode: "+s.getMode()+"]"));
+                String reply="Socrates: "+response.get("reply").getAsString();
+                InteractionNetwork.message(current,s,reply+" [accepted: "+action+"; mode: "+s.getMode()+"]",reply);
             });
-        }); } catch(RejectedExecutionException ex) { PENDING.remove(owner);player.sendSystemMessage(Component.literal("Planner queue busy.")); }
+        }); } catch(RejectedExecutionException ex) { PENDING.remove(owner);InteractionNetwork.message(player,s,"Planner queue busy."); }
     }
     static JsonObject request(JsonObject body) throws Exception {
         Path file=FMLPaths.CONFIGDIR.get().resolve("socrates/bridge.json");

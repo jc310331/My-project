@@ -78,7 +78,14 @@ class Planner:
                 if action:
                     result = {'action': action, 'reply': 'Requested ' + action + '.'}
                 elif self.provider == 'offline':
-                    result = {'action': 'none', 'reply': 'Offline planner: try follow me, stay here, set home, resident, collect items, explore, or remember <fact>.'}
+                    replies = {
+                        'hello, socrates': "Hello! What shall we work on together? Ask about my abilities, recall our memories, or tell me something to remember.",
+                        'what can you help with': "I can follow, stay, live near home, explore nearby, and collect dropped items. I can remember facts you tell me. I cannot mine, craft, build, fight, or operate Create machinery yet.",
+                        'what should we do next': "What would make a useful small goal? We could explore a safe area together, or you could drop supplies for me to collect. Choose an action in the menu when you are ready; this conversation has not started a task.",
+                        'why are you called socrates': "My name is a reminder to ask good questions. Before we start a job, let us agree what success would look like. What would you like us to achieve?",
+                    }
+                    reply = replies.get(normalized.rstrip('.!?'), 'Offline conversation: choose a topic, or try follow me, stay here, collect items, explore, or remember <fact>. Free-form AI conversation needs a configured provider.')
+                    result = {'action': 'none', 'reply': reply}
                 else:
                     facts = [r[0] for r in db.execute('SELECT fact FROM memories WHERE scope=? ORDER BY created DESC LIMIT 8', (scope,))]
                     result = self.cloud(text, facts)

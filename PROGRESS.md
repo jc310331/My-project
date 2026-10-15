@@ -71,3 +71,10 @@ Network/install/start instructions are saved as an environment draft; review/sav
 and publication are separate platform steps. Processes must restart in a new task.
 No unattended runner is configured: work continues during active sessions and
 resumes from this log/history/artifacts, not in the background after a session ends.
+
+### Remote backup verified
+
+Source, JARs and evidence were pushed to the existing repository branch
+`jc310331/My-project:socrates/v0.3.1`. Initial release commit:
+`450e43efe7e14296f5951e5a9cf3299156ce88ab`. The original main branch was not
+created or modified. A final documentation checkpoint follows this release commit.

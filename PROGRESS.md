@@ -1,5 +1,16 @@
 # Project Socrates progress
 
+## 2026-10-15 — design workshop while user tests 0.3.2
+
+Reviewed the current entity, bridge, planner and release evidence for the user's
+requested improvement brainstorm. Concrete proposals and acceptance criteria are
+in `source/docs/COMPANION-DIRECTION.md`. Recommended order after reported defects:
+accurate status/observation and acknowledged existing jobs, then conversation
+continuity/memory controls and navigation recovery, followed by bounded resource
+work and social routines. Larger crafting/building/Create features remain separate
+capabilities. This is design work only; no runtime code or release artifact changed.
+No new test run is needed for the documentation-only workshop.
+
 ## 2026-10-15 — v0.3.2 interaction and topics milestone
 
 User reported their PC test looked good and requested MCA-style menus, then
